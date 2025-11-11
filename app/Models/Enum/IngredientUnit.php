@@ -14,9 +14,9 @@ enum IngredientUnit: string
 
     public static function getOptions(): array
     {
-        return array_map(fn(self $unit) => [
+        return array_map(fn (self $unit) => [
             'label' => $unit->label() ?: 'Aucune quantité',
-            'value' => $unit->value
+            'value' => $unit->value,
         ], self::cases());
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\RecipeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -14,6 +15,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::resource('ingredients', IngredientController::class);
+    Route::resource('recipes', RecipeController::class);
 });
 
 require __DIR__.'/settings.php';

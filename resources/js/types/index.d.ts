@@ -33,6 +33,17 @@ export interface Ingredient {
     unit_label: string;
 }
 
+export interface Recipe {
+    id: number;
+    name: string;
+    persons;
+    number;
+    duration: number;
+    level: string;
+    level_label: string;
+    image: stirng;
+}
+
 export interface Auth {
     user: User;
 }

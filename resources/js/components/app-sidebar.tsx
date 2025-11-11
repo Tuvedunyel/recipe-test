@@ -13,15 +13,21 @@ import {
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Carrot, Folder, LayoutGrid } from 'lucide-react';
+import { BookOpen, Carrot, Folder, LayoutGrid, ChefHat } from 'lucide-react';
 import AppLogo from './app-logo';
 import ingredients from '@/routes/ingredients';
+import recipes from '@/routes/recipes';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Tableau de bord',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'Recettes',
+        href: recipes.index(),
+        icon: ChefHat,
     },
     {
         title: 'Ingredients',
