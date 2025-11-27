@@ -34,6 +34,7 @@ export interface Ingredient {
 }
 
 export interface Recipe {
+    description: string;
     id: number;
     name: string;
     persons;
@@ -43,6 +44,7 @@ export interface Recipe {
     level_label: string;
     image: stirng;
 }
+
 
 export interface Auth {
     user: User;

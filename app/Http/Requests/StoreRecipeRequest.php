@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Enum\RecipeLevel;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRecipeRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreRecipeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,12 @@ class StoreRecipeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'min:3'],
+            'persons' => ['required', 'integer', 'min:1'],
+            'duration' => ['required', 'integer', 'min:1'],
+            'description' => ['nullable', 'string'],
+            'level' => ['required', Rule::enum(RecipeLevel::class)],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
         ];
     }
 }

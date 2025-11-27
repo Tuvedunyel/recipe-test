@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Model\Recipe;
+use App\Models\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,8 +21,9 @@ class RecipeResource extends JsonResource
             'persons' => $this->resource->persons,
             'duration' => $this->resource->duration,
             'level' => $this->resource->level,
-            'level_label' => this->resource->level->label(),
+            'level_label' => $this->resource->level->label(),
             'image' => $this->resource->getFirstMediaUrl('image', 'thumb'),
+            'description' => $this->resource->description,
         ];
     }
 }

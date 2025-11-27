@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRecipeRequest;
 use App\Http\Requests\UpdateRecipeRequest;
 use App\Http\Resources\RecipeResource;
+use App\Models\Enum\RecipeLevel;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class RecipeController extends Controller
@@ -36,7 +39,13 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        //
+        $recipe = new Recipe([
+            'level' => RecipeLevel::EASY,
+            'persons' => 4,
+            'duration' => 30,
+        ]);
+
+        return $this->edit($recipe);
     }
 
     /**
@@ -44,7 +53,10 @@ class RecipeController extends Controller
      */
     public function store(StoreRecipeRequest $request)
     {
-        //
+        $recipe = Recipe::create($request->validated());
+        $this->handleFormRequest($recipe, $request);
+
+        return to_route('recipes.index')->with('success', 'La recette a bien été créée');
     }
 
     /**
@@ -60,15 +72,21 @@ class RecipeController extends Controller
      */
     public function edit(Recipe $recipe)
     {
-        //
+        return Inertia::render('recipes/form', [
+            'recipe' => new RecipeResource($recipe),
+            'levels' => fn () => RecipeLevel::getOptions(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRecipeRequest $request, Recipe $recipe)
+    public function update(StoreRecipeRequest $request, Recipe $recipe)
     {
-        //
+        $recipe->update($request->validated());
+        $this->handleFormRequest($recipe, $request);
+
+        return to_route('recipes.index')->with('success', 'La recette a bien été mise à jour');
     }
 
     /**
@@ -76,6 +94,15 @@ class RecipeController extends Controller
      */
     public function destroy(Recipe $recipe)
     {
-        //
+        $recipe->delete();
+        return to_route('recipes.index')->with('success', 'La recette a bien été supprimée');
+    }
+
+    private function handleFormRequest(Recipe $recipe, StoreRecipeRequest $request)
+    {
+        $image = $request->validated('image');
+        if ($image instanceof UploadedFile) {
+            $recipe->addMedia($image)->toMediaCollection('image');
+        }
     }
 }

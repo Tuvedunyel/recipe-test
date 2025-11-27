@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enum\RecipeLevel;
 use App\Models\Traits\HasSortable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,16 +33,14 @@ class Recipe extends Model implements HasMedia
     ];
 
     protected $casts = [
-        'level' => RecepeLevel::class,
+        'level' => RecipeLevel::class,
     ];
-
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection('image')->singleFile();
-    }
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        $this->addMediaCollection('thumb')->fit(Fit::Crop, 160, 160);
+        $this->addMediaConversion('thumb')
+            ->width(300)
+            ->height(300)
+            ->sharpen(10);
     }
 }
